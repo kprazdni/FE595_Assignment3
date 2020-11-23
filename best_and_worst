@@ -1,0 +1,30 @@
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+# Using sentiment analysis, find the best and worst business ideas
+def best_and_worst(self):
+    if type(self) != list:
+        raise TypeError('Error: Please input a list.')
+    else:
+        all_scores = list()
+        for k in self:
+            #find sentiment scores for all of the purposes
+            find_score = SentimentIntensityAnalyzer().polarity_scores(k)
+            compound = find_score['compound']
+            all_scores.append(compound)
+        best = max(all_scores)
+        worst = min(all_scores)
+        # print best business ideas and its score
+        print("The best business idea score is:", best)
+        print("The best business idea is:")
+        for b in range(len(all_scores)):
+            if all_scores[b] == best:
+                print(self[b])
+        print("\n")
+        # print worst business idea and its score
+        print("The worst business idea score is:", worst)
+        print("The worst business idea is:")
+        for w in range(len(all_scores)):
+            if all_scores[w] == worst:
+                print(self[w])
+        print("\n")
