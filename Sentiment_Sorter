@@ -77,6 +77,7 @@ if __name__ == "__main__":
     best_and_worst(all_purposes)
 
 
+# find the 10 most common words in the purposes
 def most_common(self, remove_stopwords=True):
     if type(self) != list:
         raise TypeError("Error: Please input a list.")
