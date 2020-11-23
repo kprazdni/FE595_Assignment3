@@ -1,0 +1,28 @@
+import string
+
+#to split name and purpose into two different list
+def split_data(self):
+    name_and_purpose = list()
+    for line in self.readlines():
+        for i in line:
+            #remove punctuation
+            if (i in string.punctuation) and (i != "-"):
+                line = line.replace(i, " ")
+                line = line.strip()
+        name_and_purpose.append(line)
+    #make two new lists for name and purpose
+    name = list()
+    purpose = list()
+    for j in name_and_purpose:
+        #strip name column
+        if j[0] == "N":
+            a = j[5:]
+            a = a.strip()
+            name.append(a)
+        #strip purpose column
+        elif j[0] == "P":
+            b = j[8:]
+            b = b.strip()
+            purpose.append(b)
+    return name, purpose
+
