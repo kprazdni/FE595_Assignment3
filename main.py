@@ -1,0 +1,99 @@
+import string
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+# using file path, open all files wanted for analysis
+f1 = open("/Users/Class2020/PycharmProjects/Files/fe595export.csv")
+f2 = open("/Users/Class2020/PycharmProjects/Files/finalcompanyinfo.csv")
+f3 = open("/Users/Class2020/PycharmProjects/Files/RandomCompanyExport.csv")
+f4 = open("/Users/Class2020/PycharmProjects/Files/scrapes.csv")
+
+#to split name and purpose into two different list
+def split_data(self):
+    name_and_purpose = list()
+    for line in self.readlines():
+        for i in line:
+            #remove punctuation
+            if (i in string.punctuation) and (i != "-"):
+                line = line.replace(i, " ")
+                line = line.strip()
+        name_and_purpose.append(line)
+    #make two new lists for name and purpose
+    name = list()
+    purpose = list()
+    for j in name_and_purpose:
+        #strip name column
+        if j[0] == "N":
+            a = j[5:]
+            a = a.strip()
+            name.append(a)
+        #strip purpose column
+        elif j[0] == "P":
+            b = j[8:]
+            b = b.strip()
+            purpose.append(b)
+    return name, purpose
+
+if __name__ == "__main__":
+    name_and_purpose_1 = split_data(f1)
+    name_and_purpose_2 = split_data(f2)
+    name_and_purpose_3 = split_data(f3)
+    name_and_purpose_4 = split_data(f4)
+    #merge all files
+    all_names = name_and_purpose_1[0] + name_and_purpose_2[0] + name_and_purpose_3[0] + name_and_purpose_4[0]
+    all_purposes = name_and_purpose_1[1] + name_and_purpose_2[1] + name_and_purpose_3[1] + name_and_purpose_4[1]
+
+
+# Using sentiment analysis, find the best and worst business ideas
+def best_and_worst(self):
+    if type(self) != list:
+        raise TypeError('Error: Please input a list.')
+    else:
+        all_scores = list()
+        for k in self:
+            #find sentiment scores for all of the purposes
+            find_score = SentimentIntensityAnalyzer().polarity_scores(k)
+            compound = find_score['compound']
+            all_scores.append(compound)
+        best = max(all_scores)
+        worst = min(all_scores)
+        # print best business ideas and its score
+        print("The best business idea score is:", best)
+        print("The best business idea is:")
+        for b in range(len(all_scores)):
+            if all_scores[b] == best:
+                print(self[b])
+        print("\n")
+        # print worst business idea and its score
+        print("The worst business idea score is:", worst)
+        print("The worst business idea is:")
+        for w in range(len(all_scores)):
+            if all_scores[w] == worst:
+                print(self[w])
+        print("\n")
+
+if __name__ == "__main__":
+    best_and_worst(all_purposes)
+
+
+def most_common(self, remove_stopwords=True):
+    if type(self) != list:
+        raise TypeError("Error: Please input a list.")
+    else:
+        details_str = " ".join(self)
+        # tokenize
+        tokens = nltk.word_tokenize(details_str)
+        # remove all stop words and then find the 10 most common words
+        if remove_stopwords:
+            stopwords = nltk.corpus.stopwords.words('english')
+            all_words = nltk.FreqDist(word.lower() for word in tokens if word not in stopwords)
+        else:
+            all_words = nltk.FreqDist(word.lower() for word in tokens)
+        most_common_words = all_words.most_common(10)
+        print("The 10 most common words in the Companies' Purposes are:")
+        for word in most_common_words:
+            print(word[0])
+
+if __name__ == "__main__":
+    most_common(all_purposes)
