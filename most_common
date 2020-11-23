@@ -1,0 +1,19 @@
+import nltk
+
+def most_common(self, remove_stopwords=True):
+    if type(self) != list:
+        raise TypeError("Error: Please input a list.")
+    else:
+        details_str = " ".join(self)
+        # tokenize
+        tokens = nltk.word_tokenize(details_str)
+        # remove all stop words and then find the 10 most common words
+        if remove_stopwords:
+            stopwords = nltk.corpus.stopwords.words('english')
+            all_words = nltk.FreqDist(word.lower() for word in tokens if word not in stopwords)
+        else:
+            all_words = nltk.FreqDist(word.lower() for word in tokens)
+        most_common_words = all_words.most_common(10)
+        print("The 10 most common words in the Companies' Purposes are:")
+        for word in most_common_words:
+            print(word[0])
