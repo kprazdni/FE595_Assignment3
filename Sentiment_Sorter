@@ -9,7 +9,7 @@ f2 = open("/Users/Class2020/PycharmProjects/Files/finalcompanyinfo.csv")
 f3 = open("/Users/Class2020/PycharmProjects/Files/RandomCompanyExport.csv")
 f4 = open("/Users/Class2020/PycharmProjects/Files/scrapes.csv")
 
-#to split name and purpose into two different list
+#to split name and purpose into two different lists
 def split_data(self):
     name_and_purpose = list()
     for line in self.readlines():
